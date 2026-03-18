@@ -175,6 +175,30 @@
 
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; font-size: 0.85rem; padding: 0.6rem 1.2rem; border-radius: 100px; opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 999; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── TELEGRAM ── */
+    .telegram-banner {
+      max-width: 960px; margin: 0 auto 0; padding: 0 2rem 3rem;
+    }
+    .telegram-card {
+      background: linear-gradient(135deg, #0088cc 0%, #005f8e 100%);
+      border-radius: var(--radius); padding: 1.75rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap; box-shadow: 0 4px 24px rgba(0,136,204,0.25);
+    }
+    .telegram-left { display: flex; align-items: center; gap: 1rem; }
+    .telegram-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .telegram-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: #fff; margin-bottom: 0.2rem; }
+    .telegram-desc { font-size: 0.85rem; color: rgba(255,255,255,0.8); }
+    .btn-telegram {
+      background: #fff; color: #0088cc; border: none; border-radius: 8px;
+      padding: 0.7rem 1.4rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      text-decoration: none; white-space: nowrap;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .btn-telegram:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
   </style>
 </head>
 <body>
@@ -187,6 +211,7 @@
     <a href="#avis">Avis</a>
     <a href="#guide">Guide</a>
     <a href="#faq">FAQ</a>
+    <a href="https://t.me/parrainagefrance2026" target="_blank" rel="noopener noreferrer" style="color:#0088cc; font-weight:600;">📣 Telegram</a>
   </nav>
 </header>
 
@@ -212,6 +237,17 @@
       <span class="stat-value">6</span>
       <span class="stat-label">Offres actives</span>
     </div>
+  </div>
+
+  <!-- Bouton Telegram sous les stats -->
+  <div style="margin-top:2rem;">
+    <a href="https://t.me/parrainagefrance2026" target="_blank" rel="noopener noreferrer"
+      style="display:inline-flex; align-items:center; gap:0.5rem; background:#0088cc; color:#fff; border-radius:100px; padding:0.65rem 1.4rem; font-size:0.9rem; font-weight:600; text-decoration:none; transition:transform 0.15s, box-shadow 0.15s; box-shadow:0 2px 12px rgba(0,136,204,0.3);"
+      onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 20px rgba(0,136,204,0.4)'"
+      onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 12px rgba(0,136,204,0.3)'">
+      ✈️ Rejoindre le canal Telegram
+    </a>
+    <p style="font-size:0.78rem; color:var(--muted); margin-top:0.6rem;">Nouvelles offres et alertes en avant-première</p>
   </div>
 </section>
 
@@ -379,6 +415,24 @@
 
 <div class="divider"></div>
 
+<!-- ── BANNIÈRE TELEGRAM ── -->
+<div class="telegram-banner">
+  <div class="telegram-card">
+    <div class="telegram-left">
+      <div class="telegram-icon">✈️</div>
+      <div>
+        <div class="telegram-title">Rejoignez le canal Telegram</div>
+        <div class="telegram-desc">Recevez les nouvelles offres et alertes parrainage en avant-première · Gratuit · Sans engagement</div>
+      </div>
+    </div>
+    <a class="btn-telegram" href="https://t.me/parrainagefrance2026" target="_blank" rel="noopener noreferrer">
+      S'abonner gratuitement →
+    </a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
 <!-- ── TÉMOIGNAGES ── -->
 <section class="testimonials" id="avis">
   <h2 class="testimonials-title">Ce que disent nos filleuls</h2>
@@ -520,6 +574,9 @@
 <!-- ── FOOTER ── -->
 <footer>
   <p>Site tenu par un particulier · Aucune donnée personnelle collectée · Pas de cookies tiers</p>
+  <p style="margin-top:0.5rem;">
+    <a href="https://t.me/parrainagefrance2026" target="_blank" rel="noopener noreferrer" style="color:#0088cc; text-decoration:none; font-weight:500;">✈️ Canal Telegram</a>
+  </p>
   <p style="margin-top:0.4rem;">Les offres présentées sont susceptibles d'évoluer — vérifiez les conditions sur le site de chaque établissement.</p>
 </footer>
 
@@ -556,7 +613,7 @@
       return;
     }
     try {
-      const res = await fetch('https://formspree.io/f/mreyrdba', {
+      const res = await fetch('https://formspree.io/f/VOTRE_ID_FORMSPREE', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ email: email, message: 'Demande de lien parrainage Linxea' })
