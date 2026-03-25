@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulateur PERin 2026 — Économisez sur vos impôts</title>
+  <meta name="description" content="Calculez en 2 minutes vos économies d'impôt avec un Plan d'Épargne Retraite. Barème IR 2026 officiel, calcul personnalisé gratuit."/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --navy:   #0a1628;
+      --navy2:  #0f1e33;
+      --navy3:  #1b2e4b;
+      --gold:   #c9984a;
+      --gold2:  #e8c87a;
+      --cream:  #f8f5ef;
+      --muted:  #8fa3bc;
+      --line:   rgba(255,255,255,0.09);
+      --green:  #2d6a4f;
+      --red:    #9b2335;
+    }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input[type=number] { -moz-appearance: textfield; }
+
+    /* ══ NAV — identique au site principal ══ */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,22,40,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.8rem;
+      padding: 6px 12px; border-radius: 6px; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links .active { color: var(--gold); }
+    .nav-tg {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(201,152,74,0.12);
+      border: 1px solid rgba(201,152,74,0.25);
+      color: var(--gold); font-size: 0.76rem; font-weight: 600;
+      padding: 6px 14px; border-radius: 100px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-tg:hover { background: rgba(201,152,74,0.2); }
+
+    /* ══ HERO ══ */
+    .hero {
+      padding: 72px 24px 56px;
+      text-align: center;
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy2) 100%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,152,74,0.15) 0%, transparent 70%);
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); font-weight: 700; margin-bottom: 18px; position: relative;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 900;
+      line-height: 1.12; margin-bottom: 16px; position: relative;
+      background: linear-gradient(135deg, #fff 40%, var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero p {
+      font-size: 0.97rem; color: var(--muted);
+      max-width: 500px; margin: 0 auto 28px; line-height: 1.65; position: relative;
+    }
+    .hero-badges {
+      display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; position: relative;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 13px; border-radius: 100px; font-size: 0.72rem; font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.1); color: var(--muted);
+    }
+
+    /* ══ SIMULATEUR WRAPPER ══ */
+    #sim-root {
+      max-width: 780px; margin: 0 auto;
+      padding: 20px 16px 16px;
+    }
+
+    /* ══ SECTION PARRAINAGES ══ */
+    .parrain-section {
+      max-width: 900px; margin: 0 auto;
+      padding: 64px 24px 80px;
+    }
+    .section-eyebrow {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); font-weight: 700; margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 700;
+      line-height: 1.2; margin-bottom: 10px;
+    }
+    .section-sub {
+      font-size: 0.88rem; color: var(--muted);
+      max-width: 520px; line-height: 1.65; margin-bottom: 44px;
+    }
+    .parrain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px; margin-bottom: 44px;
+    }
+    .parrain-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 14px; padding: 26px 22px;
+      transition: border-color 0.2s, background 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .parrain-card:hover {
+      background: rgba(201,152,74,0.06);
+      border-color: rgba(201,152,74,0.3);
+    }
+    .card-logo {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    }
+    .card-avatar {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.8rem; flex-shrink: 0;
+    }
+    .card-name { font-weight: 700; font-size: 1rem; }
+    .card-type {
+      font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--gold); font-weight: 600; margin-bottom: 12px;
+    }
+    .card-bonus-label { font-size: 0.68rem; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .card-bonus-val { font-size: 1.1rem; font-weight: 700; color: var(--gold2); margin-bottom: 12px; }
+    .card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 18px; flex: 1; }
+    .card-code {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,152,74,0.1);
+      border: 1px solid rgba(201,152,74,0.25);
+      color: var(--gold2); font-size: 0.76rem; font-weight: 700;
+      letter-spacing: 0.06em; padding: 6px 12px; border-radius: 6px;
+      font-family: monospace; margin-bottom: 14px; cursor: pointer;
+      transition: background 0.2s; width: 100%; justify-content: space-between;
+    }
+    .card-code:hover { background: rgba(201,152,74,0.18); }
+    .copy-icon { font-size: 0.78rem; opacity: 0.6; }
+    .card-btn {
+      display: block; width: 100%; padding: 11px;
+      background: var(--gold); color: var(--navy);
+      border: none; border-radius: 8px; font-size: 0.84rem; font-weight: 700;
+      cursor: pointer; text-align: center; text-decoration: none;
+      transition: background 0.18s; font-family: 'DM Sans', sans-serif;
+      margin-bottom: 8px;
+    }
+    .card-btn:hover { background: var(--gold2); }
+    .card-btn.outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #fff; margin-bottom: 0;
+    }
+    .card-btn.outline:hover { background: rgba(255,255,255,0.06); }
+    .card-tag {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 0.65rem; font-weight: 700; margin-bottom: 8px;
+    }
+    .tag-best { background: rgba(201,152,74,0.2); color: var(--gold2); }
+    .tag-active { background: rgba(45,106,79,0.2); color: #6fcf97; }
+
+    /* ══ CTA Telegram (identique au site) ══ */
+    .cta-tg {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 16px; padding: 32px 28px;
+      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+    }
+    .cta-tg-text { flex: 1; min-width: 200px; }
+    .cta-tg-text h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 6px; }
+    .cta-tg-text p { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+    .cta-tg-btn {
+      display: inline-block; padding: 12px 26px;
+      background: var(--gold); color: var(--navy);
+      border-radius: 9px; font-weight: 700; font-size: 0.88rem;
+      text-decoration: none; white-space: nowrap; transition: background 0.18s;
+    }
+    .cta-tg-btn:hover { background: var(--gold2); }
+
+    /* ══ BACK LINK ══ */
+    .back-bar {
+      text-align: center;
+      padding: 20px 24px 0;
+    }
+    .back-link {
+      font-size: 0.8rem; color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--gold); }
+
+    /* ══ DIVIDER ══ */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--line);
+      max-width: 900px; margin: 0 auto;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      text-align: center; padding: 24px;
+      font-size: 0.7rem; color: rgba(255,255,255,0.25); line-height: 1.7;
+    }
+    footer a { color: rgba(255,255,255,0.35); text-decoration: none; }
+
+    /* ══ TOAST ══ */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      background: #2d6a4f; color: #fff; padding: 10px 22px;
+      border-radius: 100px; font-size: 0.82rem; font-weight: 600;
+      pointer-events: none; opacity: 0; transition: opacity 0.3s;
+      z-index: 999; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- ════════ TOAST ════════ -->
+  <div class="toast" id="toast">✓ Code copié !</div>
+
+  <!-- ════════ NAV — identique au site ════════ -->
+  <nav>
+    <a href="index.html" class="nav-brand">parrainage·guide</a>
+    <div class="nav-links">
+      <a href="index.html">Offres</a>
+      <a href="index.html#avis">Avis</a>
+      <a href="index.html#guide">Guide</a>
+      <a href="simulateur.html" class="active">Simulateur PER</a>
+      <a href="https://t.me/parrainagefrance2026" target="_blank" class="nav-tg">📣 Telegram</a>
+    </div>
+  </nav>
+
+  <!-- ════════ HERO ════════ -->
+  <section class="hero">
+    <div class="hero-eyebrow">Outil gratuit · Barème IR 2026 officiel</div>
+    <h1>Combien d'impôts pouvez-vous<br/>économiser avec un PER ?</h1>
+    <p>Simulez en 2 minutes votre optimisation fiscale personnalisée — calcul basé sur votre situation réelle, barème 2026 à jour.</p>
+    <div class="hero-badges">
+      <span class="badge">📊 Barème IR 2026 · PASS 47 100 €</span>
+      <span class="badge">🔒 Aucune donnée collectée</span>
+      <span class="badge">⚡ Résultat immédiat</span>
+    </div>
+  </section>
+
+  <!-- ════════ SIMULATEUR ════════ -->
+  <div id="sim-root"></div>
+
+  <hr class="section-divider"/>
+
+  <!-- ════════ PARRAINAGES ════════ -->
+  <section id="offres" class="parrain-section">
+    <div class="section-eyebrow">Codes de parrainage · Vérifiés mars 2026</div>
+    <h2 class="section-title">Ouvrez votre PER<br/>avec un avantage exclusif</h2>
+    <p class="section-sub">
+      Vous connaissez maintenant vos économies potentielles. Passez à l'action avec ces courtiers de confiance — le bonus parrainage est appliqué automatiquement.
+    </p>
+
+    <div class="parrain-grid">
+
+      <!-- Linxea -->
+      <div class="parrain-card">
+        <div class="card-tag tag-best">⭐ Meilleur PER</div>
+        <div class="card-logo">
+          <div class="card-avatar" style="background:rgba(99,179,237,0.15);color:#63b3ed;">LX</div>
+          <div class="card-name">Linxea</div>
+        </div>
+        <div class="card-type">Assurance vie · PER individuel</div>
+        <div class="card-bonus-label">Bonus parrainage</div>
+        <div class="card-bonus-val">Jusqu'à 100 €</div>
+        <div class="card-desc">
+          Meilleure assurance vie et PER en ligne selon les classements indépendants. Frais de gestion parmi les plus bas du marché. Lien personnalisé envoyé très rapidement ⚡
+        </div>
+        <a href="mailto:contact@parrainageguide.fr?subject=Lien%20parrainage%20Linxea%20PER" class="card-btn">
+          Recevoir mon lien Linxea →
+        </a>
+        <a href="https://t.me/parrainagefrance2026" target="_blank" class="card-btn outline">
+          Via Telegram (réponse rapide)
+        </a>
+      </div>
+
+      <!-- Lucya Cardif -->
+      <div class="parrain-card">
+        <div class="card-tag tag-active">✓ Actif</div>
+        <div class="card-logo">
+          <div class="card-avatar" style="background:rgba(246,173,85,0.15);color:#f6ad55;">LC</div>
+          <div class="card-name">Lucya Cardif</div>
+        </div>
+        <div class="card-type">Assurance vie · PER · BNP Paribas</div>
+        <div class="card-bonus-label">Bonus parrainage</div>
+        <div class="card-bonus-val">Offre en cours</div>
+        <div class="card-desc">
+          Contrat adossé à BNP Paribas Cardif. Large choix d'unités de compte, fonds euros et gestion pilotée. Idéal pour une diversification à long terme.
+        </div>
+        <button class="card-code" onclick="copyCode('YODE57352')">
+          <span>Code : YODE57352</span>
+          <span class="copy-icon">⎘</span>
+        </button>
+        <a href="https://www.assurancevie.com/informations/ouvrir-un-contrat.html?utm_source=Parrainage_Espace-client&utm_medium=Espace-client&utm_campaign=Parrainage_Espace-client" class="card-btn" target="_blank" rel="noopener">
+          Ouvrir un contrat Lucya →
+        </a>
+      </div>
+
+      <!-- Fortuneo (bourse / épargne) -->
+      <div class="parrain-card">
+        <div class="card-tag tag-best">⭐ Meilleur bonus</div>
+        <div class="card-logo">
+          <div class="card-avatar" style="background:rgba(104,211,145,0.15);color:#68d391;">F</div>
+          <div class="card-name">Fortuneo</div>
+        </div>
+        <div class="card-type">Banque en ligne · Bourse · PEA</div>
+        <div class="card-bonus-label">Bonus parrainage</div>
+        <div class="card-bonus-val">Jusqu'à 150 €</div>
+        <div class="card-desc">
+          Pour votre PEA ou compte-titres adossé à votre PER. Forte réputation, frais de courtage compétitifs. Bonus versé sous 30 jours.
+        </div>
+        <button class="card-code" onclick="copyCode('12859297')">
+          <span>Code : 12859297</span>
+          <span class="copy-icon">⎘</span>
+        </button>
+        <a href="https://mabanque.fortuneo.fr/fr/offres-parrainage/offres-parrainage.jsp?origine=PARRAINAGE&codeParrain=12859297" class="card-btn" target="_blank" rel="noopener">
+          Ouvrir un compte Fortuneo →
+        </a>
+      </div>
+
+    </div>
+
+    <!-- CTA Telegram -->
+    <div class="cta-tg">
+      <div class="cta-tg-text">
+        <h3>Rejoignez le canal Telegram</h3>
+        <p>Nouvelles offres de parrainage, alertes bonus et mises à jour fiscales en avant-première. Gratuit, sans engagement.</p>
+      </div>
+      <a href="https://t.me/parrainagefrance2026" target="_blank" class="cta-tg-btn">📣 S'abonner gratuitement</a>
+    </div>
+  </section>
+
+  <!-- ════════ BACK ════════ -->
+  <div class="back-bar">
+    <a href="index.html" class="back-link">← Retour à toutes les offres de parrainage</a>
+  </div>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer>
+    <p>Simulation indicative · Barème IR 2026 (revenus 2025) · LFI n° 2026-103 · PASS 2025 : 47 100 €</p>
+    <p>Ne constitue pas un conseil en investissement · Sources : <a href="https://www.impots.gouv.fr" target="_blank">impots.gouv.fr</a> · <a href="https://bofip.impots.gouv.fr" target="_blank">bofip.impots.gouv.fr</a></p>
+    <p style="margin-top:8px">Site tenu par un particulier · Aucune donnée personnelle collectée · <a href="https://t.me/parrainagefrance2026" target="_blank">Canal Telegram</a></p>
+  </footer>
+
+  <!-- ════════ COPY UTIL ════════ -->
+  <script>
+    function copyCode(code) {
+      navigator.clipboard.writeText(code).then(()=>{
+        const t = document.getElementById('toast');
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'), 2000);
+      });
+    }
+  </script>
+
+  <!-- ════════ SIMULATEUR REACT ════════ -->
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    /* ── Constantes fiscales 2026 ── */
+    const PASS          = 47_100;
+    const TRANCHES      = [
+      { min:0,       max:11_600,  taux:0    },
+      { min:11_600,  max:29_579,  taux:0.11 },
+      { min:29_579,  max:84_577,  taux:0.30 },
+      { min:84_577,  max:181_917, taux:0.41 },
+      { min:181_917, max:Infinity,taux:0.45 },
+    ];
+    const CAP_DP        = 1_807;
+    const DECOTE_SOLO   = 897;
+    const DECOTE_COUPLE = 1_483;
+    const DECOTE_RATE   = 0.4525;
+    const ABATT_SAL_MIN = 500;
+    const ABATT_SAL_MAX = 14_300;
+    const ABATT_RET_MIN = 454;
+    const ABATT_RET_MAX = 4_439;
+    const CAP_DONS_75   = 2_000;
+
+    /* ── Utils ── */
+    const fmt    = n => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Math.round(n||0));
+    const fmtPct = n => `${(n*100).toFixed(0)} %`;
+    const clamp  = (v,a,b) => Math.max(a,Math.min(b,v));
+    const abattSal  = s => clamp(s*.10,ABATT_SAL_MIN,ABATT_SAL_MAX);
+    const abattRetr = r => clamp(r*.10,ABATT_RET_MIN,ABATT_RET_MAX);
+
+    function calcParts(sit,enf,iso){
+      let p=sit==='marie'?2:1;
+      if(enf>=1) p+=(iso&&sit!=='marie')?1:.5;
+      if(enf>=2) p+=.5;
+      if(enf>=3) p+=enf-2;
+      return p;
+    }
+    function impotBrut(rni,parts){
+      const r=rni/parts; let imp=0;
+      for(const t of TRANCHES){ if(r<=t.min) break; imp+=(Math.min(r,t.max)-t.min)*t.taux; }
+      return Math.max(0,imp*parts);
+    }
+    function decote(imp,couple){
+      const C=couple?DECOTE_COUPLE:DECOTE_SOLO;
+      return Math.max(0,imp-Math.max(0,C-imp*DECOTE_RATE));
+    }
+    function calcIR(rni,sit,enf,iso){
+      if(rni<=0) return 0;
+      const parts=calcParts(sit,enf,iso), base=sit==='marie'?2:1;
+      const avecQF=impotBrut(rni,parts), sansQF=impotBrut(rni,base);
+      const avantage=Math.max(0,sansQF-avecQF), cap=(parts-base)*2*CAP_DP;
+      const apresQF=avantage>cap?sansQF-cap:avecQF;
+      return Math.round(decote(Math.max(0,apresQF),sit==='marie'));
+    }
+    function calcTMI(rni,parts){
+      const r=rni/parts;
+      return TRANCHES.filter(t=>r>t.min).slice(-1)[0]?.taux??0;
+    }
+    function calcPlafond(sal,tns,autreEp){
+      const plafSal=sal>0?Math.max(PASS*.10,Math.min(Math.max(0,sal-abattSal(sal))*.10,PASS*.80)):0;
+      const tnsL=Math.min(tns,PASS*8);
+      const plafTNS=tns>0?Math.max(PASS*.10,tnsL*.10+Math.max(0,tnsL-PASS)*.15):0;
+      return Math.max(0,Math.round(Math.max(plafSal,plafTNS,PASS*.10)-(autreEp||0)));
+    }
+    function calcRNI(d){
+      return Math.max(0,
+        Math.max(0,(d.salaire||0)-abattSal(d.salaire||0))+
+        Math.max(0,(d.retraite||0)-abattRetr(d.retraite||0))+
+        (d.tns||0)+(d.foncier||0)-(d.pensAlim||0));
+    }
+    function calcReductions(d,rni){
+      let t=0;
+      if(d.sap)    t+=Math.min(d.sap,clamp(12000+(d.enfants||0)*1500,12000,15000))*.50;
+      if(d.garde)  t+=Math.min(d.garde,3500*Math.max(1,d.enfants||1))*.50;
+      if(d.dons75){ t+=Math.min(d.dons75,CAP_DONS_75)*.75; if(d.dons75>CAP_DONS_75) t+=(d.dons75-CAP_DONS_75)*.66; }
+      if(d.dons66) t+=Math.min(d.dons66,rni*.20)*.66;
+      t+=d.immoDef||0;
+      if(d.syndicat) t+=Math.min(d.syndicat,(d.salaire||0)*.01)*.66;
+      return Math.round(t);
+    }
+
+    /* ── Couleurs JS (dark theme) ── */
+    const C={
+      bg:'rgba(255,255,255,0.04)', bg2:'rgba(255,255,255,0.07)',
+      border:'rgba(255,255,255,0.09)', borderGold:'rgba(201,152,74,0.35)',
+      gold:'#c9984a', goldLt:'#e8c87a', muted:'#8fa3bc', navy:'#0f1e33',
+      green:'#2d6a4f', greenBg:'rgba(45,106,79,0.18)',
+      red:'#9b2335', redBg:'rgba(155,35,53,0.12)',
+      text:'#fff',
+    };
+
+    const S={
+      wrap:  {color:'#fff',paddingBottom:8},
+      card:  {background:C.bg,border:`1px solid ${C.border}`,borderRadius:12,padding:'20px 22px',marginBottom:14},
+      cardG: {background:C.bg,border:`1px solid ${C.borderGold}`,borderLeft:`4px solid ${C.gold}`,borderRadius:12,padding:'20px 22px',marginBottom:14},
+      cT:    {fontSize:'0.76rem',fontWeight:700,color:C.gold,textTransform:'uppercase',letterSpacing:'0.1em',fontFamily:"'DM Sans',sans-serif",marginBottom:12,paddingBottom:8,borderBottom:`1px solid ${C.border}`},
+      stpBar:{display:'flex',background:C.navy,borderRadius:'0 0 0 0',padding:'0',overflowX:'auto',borderBottom:`1px solid ${C.border}`},
+      stpBtn:(i,s)=>({padding:'10px 14px',cursor:i<s?'pointer':'default',border:'none',fontFamily:"'DM Sans',sans-serif",fontSize:'0.72rem',fontWeight:700,letterSpacing:'0.05em',textTransform:'uppercase',background:i===s?C.gold:'transparent',color:i===s?C.navy:i<s?C.goldLt:'#555',whiteSpace:'nowrap'}),
+      row:   {display:'flex',gap:12,flexWrap:'wrap',marginBottom:10},
+      fld:   {flex:'1 1 196px',display:'flex',flexDirection:'column',gap:4},
+      lbl:   {fontSize:'0.68rem',fontWeight:700,color:C.muted,letterSpacing:'0.06em',textTransform:'uppercase'},
+      inp:   {padding:'9px 28px 9px 12px',border:`1px solid ${C.border}`,borderRadius:7,fontSize:'0.9rem',color:'#fff',background:'rgba(255,255,255,0.06)',outline:'none',width:'100%'},
+      sel:   {padding:'9px 12px',border:`1px solid ${C.border}`,borderRadius:7,fontSize:'0.9rem',color:'#fff',background:'rgba(255,255,255,0.06)',width:'100%'},
+      hnt:   {fontSize:'0.67rem',color:C.muted,fontStyle:'italic'},
+      info:  {background:'rgba(29,58,110,0.3)',border:'1px solid rgba(99,140,210,0.25)',borderRadius:7,padding:'10px 14px',marginBottom:12,fontSize:'0.77rem',color:'#93b8ef',lineHeight:1.55},
+      warn:  {background:C.redBg,border:'1px solid rgba(155,35,53,0.3)',borderRadius:7,padding:'10px 14px',marginBottom:12,fontSize:'0.77rem',color:'#fc8181',lineHeight:1.55},
+      news:  {background:'rgba(93,64,55,0.2)',border:'1px solid rgba(255,224,130,0.2)',borderRadius:7,padding:'10px 14px',marginBottom:12,fontSize:'0.77rem',color:'#ffd54f',lineHeight:1.55},
+      nav:   {display:'flex',justifyContent:'space-between',marginTop:18},
+      btnP:  {background:C.gold,color:C.navy,border:'none',borderRadius:8,padding:'11px 24px',fontSize:'0.9rem',fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer'},
+      btnS:  {background:'rgba(255,255,255,0.06)',color:'#fff',border:`1px solid ${C.border}`,borderRadius:8,padding:'11px 20px',fontSize:'0.9rem',fontFamily:"'DM Sans',sans-serif",cursor:'pointer'},
+      kpiR:  {display:'flex',gap:10,flexWrap:'wrap',marginBottom:16},
+      kpi:   bg=>({flex:'1 1 115px',background:bg,borderRadius:9,padding:'13px 14px'}),
+      kV:    {fontSize:'1.2rem',fontWeight:700},
+      kL:    {fontSize:'0.62rem',letterSpacing:'0.07em',textTransform:'uppercase',opacity:0.65,marginTop:2},
+      scC:   i=>({border:`1px solid ${i===0?C.gold:C.border}`,borderLeft:`4px solid ${i===0?C.gold:C.border}`,borderRadius:9,padding:'13px 16px',marginBottom:10,background:i===0?'rgba(201,152,74,0.07)':C.bg}),
+      scG:   {display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginTop:8},
+      scV:   {fontSize:'1rem',fontWeight:700,color:'#fff'},
+      scL:   {fontSize:'0.62rem',textTransform:'uppercase',letterSpacing:'0.05em',color:C.muted},
+      tmiL:  t=>({display:'inline-block',padding:'3px 9px',borderRadius:4,fontWeight:700,fontSize:'0.8rem',background:t>=.41?'rgba(155,35,53,0.3)':t>=.30?'rgba(178,94,0,0.25)':t>=.11?'rgba(45,106,79,0.3)':'rgba(255,255,255,0.08)',color:t>=.41?'#fc8181':t>=.30?'#f6ad55':t>=.11?'#68d391':C.muted}),
+      bdg:   g=>({display:'inline-block',padding:'2px 7px',borderRadius:4,fontSize:'0.65rem',fontWeight:700,background:g?'rgba(201,152,74,0.18)':C.greenBg,color:g?C.goldLt:'#68d391',marginLeft:5}),
+      dv:    {border:'none',borderTop:`1px solid ${C.border}`,margin:'9px 0'},
+      rst:   {fontSize:'0.73rem',color:C.muted,background:'none',border:'none',cursor:'pointer',textDecoration:'underline',fontFamily:"'DM Sans',sans-serif"},
+      ctaCta:{background:'rgba(201,152,74,0.1)',border:`1px solid ${C.borderGold}`,borderRadius:12,padding:'22px',textAlign:'center',marginBottom:4},
+    };
+
+    const STEPS=['Situation','Revenus','Épargne existante','Défiscalisation','Résultats'];
+    const INIT={nom:'',situation:'celibataire',enfants:0,isole:false,salaire:0,tns:0,foncier:0,retraite:0,pensAlim:0,perDejaVerse:0,abondement:0,perco:0,sap:0,garde:0,dons75:0,dons66:0,immoDef:0,syndicat:0};
+
+    function Sim(){
+      const [step,setStep]=useState(0);
+      const [data,setData]=useState(INIT);
+      const set=(k,v)=>setData(p=>({...p,[k]:v}));
+      const num=k=>e=>set(k,parseFloat(e.target.value)||0);
+      const tog=k=>e=>set(k,e.target.checked);
+
+      const R=useMemo(()=>{
+        const rni=calcRNI(data);
+        const autreEp=(data.perDejaVerse||0)+(data.abondement||0)+(data.perco||0);
+        const plafond=calcPlafond(data.salaire,data.tns,autreEp);
+        const reductions=calcReductions(data,rni);
+        const impBrut=calcIR(rni,data.situation,data.enfants,data.isole);
+        const impNet=Math.max(0,impBrut-reductions);
+        const parts=calcParts(data.situation,data.enfants,data.isole);
+        const tmi=calcTMI(rni,parts);
+        const scenarios=[];
+        for(const t of [...TRANCHES].reverse()){
+          if(t.taux===0) continue;
+          const cible=t.min*parts; if(cible>=rni) continue;
+          const v=Math.min(rni-cible,plafond); if(v<=0) continue;
+          const rA=Math.max(0,rni-v);
+          const iA=Math.max(0,calcIR(rA,data.situation,data.enfants,data.isole)-reductions);
+          const eco=Math.max(0,impNet-iA);
+          scenarios.push({label:`Plancher tranche ${fmtPct(t.taux)}`,versement:Math.round(v),rniApres:Math.round(rA),impApres:Math.round(iA),economie:Math.round(eco),rendement:v?eco/v:0,atPlafond:v>=plafond,taux:t.taux});
+        }
+        if(plafond>0&&!scenarios.some(s=>s.atPlafond)){
+          const rA=Math.max(0,rni-plafond);
+          const iA=Math.max(0,calcIR(rA,data.situation,data.enfants,data.isole)-reductions);
+          const eco=Math.max(0,impNet-iA);
+          scenarios.push({label:'Versement maximum (plafond)',versement:Math.round(plafond),rniApres:Math.round(rA),impApres:Math.round(iA),economie:Math.round(eco),rendement:plafond?eco/plafond:0,atPlafond:true,taux:tmi});
+        }
+        return{rni,plafond,reductions,impBrut,impNet,tmi,scenarios,parts,autreEp};
+      },[data]);
+
+      const NF=({label,k,hint})=>(
+        <div style={S.fld}>
+          <label style={S.lbl}>{label}</label>
+          <div style={{position:'relative'}}>
+            <input type="number" min={0} value={data[k]||''} onChange={num(k)} placeholder="0" style={S.inp}/>
+            <span style={{position:'absolute',right:9,top:'50%',transform:'translateY(-50%)',color:C.muted,fontSize:'0.8rem'}}>€</span>
+          </div>
+          {hint&&<span style={S.hnt}>{hint}</span>}
+        </div>
+      );
+      const CK=({label,k,hint})=>(
+        <div style={{marginBottom:6}}>
+          <label style={{display:'flex',alignItems:'center',gap:8,cursor:'pointer'}}>
+            <input type="checkbox" checked={!!data[k]} onChange={tog(k)}/>
+            <span style={{fontSize:'0.84rem'}}>{label}</span>
+          </label>
+          {hint&&<div style={{...S.hnt,paddingLeft:22}}>{hint}</div>}
+        </div>
+      );
+
+      const views=[
+        /* 0 — Situation */
+        ()=>(
+          <>
+            <div style={S.info}>📋 Barème IR 2026 (revenus 2025) · LFI +0,9 % · PASS 2025 : <strong>{fmt(PASS)}</strong> · Données non collectées</div>
+            <div style={S.card}>
+              <div style={S.cT}>Situation familiale</div>
+              <div style={S.row}>
+                <div style={S.fld}>
+                  <label style={S.lbl}>Prénom (optionnel)</label>
+                  <input type="text" value={data.nom} onChange={e=>set('nom',e.target.value)} placeholder="Marie" style={S.inp}/>
+                </div>
+                <div style={S.fld}>
+                  <label style={S.lbl}>Situation</label>
+                  <select value={data.situation} onChange={e=>set('situation',e.target.value)} style={S.sel}>
+                    <option value="celibataire">Célibataire / Divorcé(e)</option>
+                    <option value="marie">Marié(e) / Pacsé(e)</option>
+                    <option value="veuf">Veuf / Veuve</option>
+                  </select>
+                </div>
+              </div>
+              <div style={S.row}>
+                <div style={S.fld}>
+                  <label style={S.lbl}>Enfants à charge</label>
+                  <select value={data.enfants} onChange={e=>set('enfants',parseInt(e.target.value))} style={S.sel}>
+                    {[0,1,2,3,4,5,6].map(n=><option key={n} value={n}>{n}</option>)}
+                  </select>
+                </div>
+                {data.enfants>0&&data.situation!=='marie'&&(
+                  <div style={{...S.fld,justifyContent:'flex-end'}}>
+                    <CK k="isole" label="Parent isolé" hint="+0,5 part pour le 1er enfant"/>
+                  </div>
+                )}
+              </div>
+              <div style={{...S.info,marginBottom:0}}>
+                <strong>Parts fiscales :</strong> {calcParts(data.situation,data.enfants,data.isole).toFixed(1)} — Plafond QF : <strong>1 807 €/demi-part</strong>
+              </div>
+            </div>
+          </>
+        ),
+        /* 1 — Revenus */
+        ()=>(
+          <>
+            <div style={S.info}>Abattements appliqués automatiquement : salaires 10 % (min {fmt(ABATT_SAL_MIN)} / max {fmt(ABATT_SAL_MAX)}), retraites 10 % (min {fmt(ABATT_RET_MIN)} / max {fmt(ABATT_RET_MAX)}) — LFI 2026 confirmée.</div>
+            <div style={S.card}>
+              <div style={S.cT}>Revenus salariaux</div>
+              <div style={S.row}>
+                <NF k="salaire" label="Salaires & traitements" hint="Montant brut déclaré (case 1AJ)"/>
+                <NF k="retraite" label="Retraites & pensions" hint="Abattement 10 % maintenu (réforme 2 000 € rejetée)"/>
+              </div>
+              <div style={S.row}>
+                <NF k="pensAlim" label="Pensions alimentaires versées" hint="Déductibles du revenu global (case 6GI)"/>
+              </div>
+            </div>
+            <div style={S.card}>
+              <div style={S.cT}>Revenus non salariés (TNS)</div>
+              <div style={{...S.info,marginBottom:10}}>⚡ Plafond PER majoré pour les TNS : 10 % + 15 % sur la part entre 1 et 8 PASS.</div>
+              <div style={S.row}>
+                <NF k="tns" label="Bénéfices TNS (BIC/BNC/BA)" hint="Après charges professionnelles"/>
+                <NF k="foncier" label="Revenus fonciers nets" hint="Après charges & intérêts (case 4BA)"/>
+              </div>
+            </div>
+          </>
+        ),
+        /* 2 — Épargne existante */
+        ()=>(
+          <>
+            <div style={S.info}>Ces versements consomment votre plafond PER. Ils figurent sur l'avis d'imposition 2024 (cases 6QS/6QT).</div>
+            <div style={S.card}>
+              <div style={S.cT}>Épargne retraite déjà versée en 2025</div>
+              <div style={S.row}>
+                <NF k="perDejaVerse" label="Versements PER volontaires" hint="PERin ou PERo — déjà déduits"/>
+                <NF k="abondement" label="Abondement employeur PERO/PEE"/>
+              </div>
+              <div style={S.row}>
+                <NF k="perco" label="Versements PERCO / PERECO"/>
+              </div>
+              {R.plafond>0&&<div style={{...S.info,marginTop:8,marginBottom:0}}>Plafond restant : <strong style={{color:'#68d391'}}>{fmt(R.plafond)}</strong> · Min {fmt(PASS*.10)} · Max {fmt(PASS*.80)}</div>}
+            </div>
+            <div style={S.cardG}>
+              <div style={S.cT}>💡 Report de plafond 3 ans</div>
+              <p style={{fontSize:'0.82rem',lineHeight:1.6,margin:0,color:C.muted}}>Les plafonds non utilisés en <strong style={{color:'#fff'}}>2022, 2023 et 2024</strong> sont cumulables avec 2025. Cases 6PS / 6PT / 6PU de l'avis d'imposition 2024.</p>
+            </div>
+          </>
+        ),
+        /* 3 — Défiscalisation */
+        ()=>(
+          <>
+            <div style={S.news}>🆕 <strong>LFI 2026 :</strong> dons aux organismes d'aide (75 %) — plafond relevé à <strong>2 000 €</strong> depuis le 14 oct. 2025.</div>
+            <div style={S.card}>
+              <div style={S.cT}>Services à la personne & garde d'enfants</div>
+              <div style={S.row}>
+                <NF k="sap" label="Emploi à domicile" hint="Crédit 50 % · plafond 12 000 € + 1 500 €/enfant"/>
+                <NF k="garde" label="Garde hors domicile" hint="Crédit 50 % · plafond 3 500 €/enfant"/>
+              </div>
+            </div>
+            <div style={S.card}>
+              <div style={S.cT}>Dons aux associations</div>
+              <div style={S.row}>
+                <NF k="dons75" label="Aide aux personnes (Restos…)" hint="75 % jusqu'à 2 000 €, puis 66 % au-delà"/>
+                <NF k="dons66" label="Associations loi 1901" hint="66 % · plafond 20 % du RNI"/>
+              </div>
+            </div>
+            <div style={S.card}>
+              <div style={S.cT}>Autres dispositifs</div>
+              <div style={S.row}>
+                <NF k="immoDef" label="Réduction immo (Pinel, Denormandie…)" hint="Montant total de la réduction obtenue"/>
+                <NF k="syndicat" label="Cotisations syndicales" hint="66 % · plafond 1 % des salaires"/>
+              </div>
+            </div>
+            {R.reductions>0&&<div style={S.info}>Total crédits & réductions estimés : <strong style={{color:'#68d391'}}>{fmt(R.reductions)}</strong></div>}
+          </>
+        ),
+        /* 4 — Résultats */
+        ()=>{
+          const{rni,plafond,reductions,impBrut,impNet,tmi,scenarios,parts}=R;
+          return(
+            <>
+              {rni===0&&<div style={S.warn}>⚠️ Aucun revenu saisi. Retournez à l'étape Revenus.</div>}
+
+              <div style={S.kpiR}>
+                <div style={S.kpi('rgba(27,46,75,0.8)')}><div style={S.kV}>{fmt(rni)}</div><div style={S.kL}>Revenu Net Imposable</div></div>
+                <div style={S.kpi('rgba(42,74,107,0.8)')}><div style={S.kV}>{fmt(impBrut)}</div><div style={S.kL}>IR Brut estimé</div></div>
+                <div style={S.kpi(reductions>0?'rgba(45,106,79,0.6)':'rgba(42,74,107,0.8)')}><div style={S.kV}>{fmt(reductions)}</div><div style={S.kL}>Crédits & réductions</div></div>
+                <div style={S.kpi('rgba(15,30,51,0.9)')}><div style={S.kV}>{fmt(impNet)}</div><div style={S.kL}>IR Net à payer</div></div>
+              </div>
+
+              <div style={S.card}>
+                <div style={{display:'flex',gap:24,flexWrap:'wrap'}}>
+                  <div>
+                    <div style={{fontSize:'0.67rem',textTransform:'uppercase',letterSpacing:'0.06em',color:C.muted,marginBottom:4}}>Tranche marginale 2026</div>
+                    <span style={S.tmiL(tmi)}>{fmtPct(tmi)}</span>
+                    <div style={{fontSize:'0.74rem',color:C.muted,marginTop:4}}>RNI/part : <strong style={{color:'#fff'}}>{fmt(rni/parts)}</strong> · {parts.toFixed(1)} parts</div>
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:'0.67rem',textTransform:'uppercase',letterSpacing:'0.06em',color:C.muted,marginBottom:4}}>Plafond PER 2025</div>
+                    <div style={{fontSize:'1.3rem',fontWeight:700,color:C.gold}}>{fmt(plafond)}</div>
+                    <div style={{fontSize:'0.72rem',color:C.muted,marginTop:3}}>PASS 2025 : {fmt(PASS)} · {data.tns>0?'TNS : 10 %+15 %':'Salarié : 10 % RNAI'}</div>
+                  </div>
+                </div>
+                {plafond>0&&<div style={{...S.info,marginTop:12,marginBottom:0}}>💡 Vérifiez les plafonds reportés 2022–2024 (cases 6PS/6PT/6PU) pour optimiser davantage.</div>}
+              </div>
+
+              <div style={S.card}>
+                <div style={S.cT}>Scénarios "raclage de tranches" — Barème 2026</div>
+                {scenarios.length===0
+                  ?<div style={{fontSize:'0.84rem',color:C.muted}}>Aucun versement supplémentaire possible (plafond épuisé ou déjà en tranche 0 %).</div>
+                  :scenarios.map((s,i)=>(
+                  <div key={i} style={S.scC(i)}>
+                    <div style={{display:'flex',alignItems:'center',flexWrap:'wrap',gap:4}}>
+                      <strong style={{fontSize:'0.86rem'}}>{s.label}</strong>
+                      {i===0&&<span style={S.bdg(true)}>★ Recommandé</span>}
+                      {s.atPlafond&&<span style={S.bdg(false)}>Plafond max</span>}
+                    </div>
+                    <div style={S.scG}>
+                      <div><div style={{...S.scV,color:C.gold}}>{fmt(s.versement)}</div><div style={S.scL}>Versement</div></div>
+                      <div><div style={{...S.scV,color:'#68d391'}}>{fmt(s.economie)}</div><div style={S.scL}>Économie d'impôt</div></div>
+                      <div><div style={S.scV}>{(s.rendement*100).toFixed(0)} %</div><div style={S.scL}>Rendement fiscal</div></div>
+                    </div>
+                    <hr style={S.dv}/>
+                    <div style={{display:'flex',gap:16,flexWrap:'wrap',fontSize:'0.74rem',color:C.muted}}>
+                      <span>RNI après : <strong style={{color:'#fff'}}>{fmt(s.rniApres)}</strong></span>
+                      <span>IR résiduel : <strong style={{color:'#fff'}}>{fmt(s.impApres)}</strong></span>
+                      <span>Gain : <strong style={{color:'#68d391'}}>− {fmt(s.economie)}</strong></span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA vers parrainages */}
+              <div style={S.ctaCta}>
+                <div style={{fontFamily:"'Playfair Display',serif",fontSize:'1.1rem',marginBottom:6}}>
+                  Prêt à ouvrir votre PER ?
+                </div>
+                <div style={{fontSize:'0.82rem',color:C.muted,marginBottom:14}}>
+                  Profitez d'un bonus parrainage sur Linxea ou Lucya Cardif ↓
+                </div>
+                <a href="#offres" style={{display:'inline-block',background:C.gold,color:'#0f1e33',padding:'10px 24px',borderRadius:8,fontWeight:700,fontSize:'0.88rem',textDecoration:'none'}}>
+                  Voir les codes parrainage PER
+                </a>
+              </div>
+
+              <div style={{fontSize:'0.65rem',color:C.muted,lineHeight:1.5,borderTop:`1px solid ${C.border}`,paddingTop:10,marginTop:8}}>
+                ⚠️ Simulation indicative — Barème IR 2026 · LFI n° 2026-103 · PASS 2025 : 47 100 € · Abattement retraite 10 % maintenu · Dons 75 % plafond 2 000 € · Ne constitue pas un conseil fiscal (art. L. 111-1 LPF) · Sources : DGFiP · bofip.impots.gouv.fr
+              </div>
+
+              <div style={{...S.nav,marginTop:14}}>
+                <button onClick={()=>setStep(3)} style={S.btnS}>← Retour</button>
+                <button onClick={()=>{setData(INIT);setStep(0);}} style={S.rst}>↺ Nouvelle simulation</button>
+              </div>
+            </>
+          );
+        },
+      ];
+
+      const View=views[step];
+      return(
+        <div style={S.wrap}>
+          <div style={S.stpBar}>
+            {STEPS.map((s,i)=>(
+              <button key={i} style={S.stpBtn(i,step)} onClick={()=>i<step&&setStep(i)}>
+                {i<step?'✓ ':`${i+1}. `}{s}
+              </button>
+            ))}
+          </div>
+          <div style={{padding:'18px 0 4px'}}>
+            {data.nom&&step>0&&(
+              <div style={{fontSize:'0.72rem',color:C.gold,marginBottom:10,fontWeight:700}}>✦ {data.nom.toUpperCase()}</div>
+            )}
+            <View/>
+            {step<4&&(
+              <div style={S.nav}>
+                {step>0?<button onClick={()=>setStep(step-1)} style={S.btnS}>← Retour</button>:<span/>}
+                <button onClick={()=>setStep(step+1)} style={S.btnP}>
+                  {step===3?'Voir mes économies →':'Suivant →'}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('sim-root')).render(<Sim/>);
+  </script>
+
+</body>
+</html>
