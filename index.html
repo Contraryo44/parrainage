@@ -6,11 +6,12 @@
 
   <!-- SEO -->
   <title>Codes Parrainage 2026 — Fortuneo, Boursobank, Lucya Cardif, Swissquote, Gaz de Bordeaux</title>
-  <meta name="description" content="Codes de parrainage vérifiés et à jour pour Fortuneo, Boursobank, Lucya Cardif, Swissquote et Gaz de Bordeaux. Jusqu'à 150€ de bonus. Parrainages réalisés avec succès en 2026." />
+  <meta name="description" content="Codes de parrainage vérifiés et à jour pour Fortuneo, Boursobank, Lucya Cardif, Swissquote et Gaz de Bordeaux. Jusqu'à 150€ de bonus. Simulateur PER 2026 gratuit inclus." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://contraryo44.github.io/parrainage/" />
+  <link rel="sitemap" type="application/xml" href="sitemap.xml" />
   <meta property="og:title" content="Codes Parrainage 2026 — Fortuneo, Boursobank, Lucya Cardif, Swissquote, Gaz de Bordeaux" />
-  <meta property="og:description" content="Codes de parrainage vérifiés et à jour. Jusqu'à 150€ de bonus garanti." />
+  <meta property="og:description" content="Codes de parrainage vérifiés et à jour. Jusqu'à 150€ de bonus garanti. Simulateur PER 2026 gratuit." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://contraryo44.github.io/parrainage/" />
 
@@ -23,7 +24,7 @@
     "description": "Codes de parrainage vérifiés et à jour pour Fortuneo, Boursobank, Lucya Cardif, Swissquote et Gaz de Bordeaux.",
     "url": "https://contraryo44.github.io/parrainage/",
     "inLanguage": "fr",
-    "dateModified": "2026-03-18",
+    "dateModified": "2026-03-26",
     "offers": [
       { "@type": "Offer", "name": "Code parrainage Fortuneo 2026", "description": "Ouvrez un compte Fortuneo avec le code 12859297 et recevez jusqu'à 150€.", "url": "https://contraryo44.github.io/parrainage/" },
       { "@type": "Offer", "name": "Code parrainage Boursobank 2026", "description": "Ouvrez un compte Boursobank avec le code PeHITaz8meO et recevez jusqu'à 130€.", "url": "https://contraryo44.github.io/parrainage/" },
@@ -56,7 +57,6 @@
     }
 
     html { scroll-behavior: smooth; }
-
     body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
 
     /* ── HEADER ── */
@@ -66,8 +66,17 @@
       display: flex; align-items: center; justify-content: space-between; height: 60px;
     }
     .logo { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--accent); letter-spacing: -0.01em; }
+    nav { display: flex; align-items: center; flex-wrap: wrap; }
     nav a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; margin-left: 1.5rem; transition: color 0.2s; }
     nav a:hover { color: var(--ink); }
+    nav a.nav-sim {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      background: var(--accent-lt); color: var(--accent);
+      padding: 0.3rem 0.8rem; border-radius: 100px;
+      font-size: 0.82rem; font-weight: 600;
+      transition: background 0.2s;
+    }
+    nav a.nav-sim:hover { background: #c2e0d0; color: var(--accent); }
 
     /* ── HERO ── */
     .hero { max-width: 760px; margin: 0 auto; padding: 5rem 2rem 3rem; text-align: center; }
@@ -76,13 +85,11 @@
     h1 em { font-style: italic; color: var(--accent); }
     .hero p { font-size: 1.05rem; color: var(--muted); max-width: 520px; margin: 0 auto 2rem; font-weight: 300; }
 
-    /* ── STATS ANIMÉES ── */
+    /* ── STATS ── */
     .hero-stats { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
     .stat { text-align: center; }
     .stat-value { display: block; font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--ink); }
     .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-
-    /* Compteur animé */
     @keyframes countUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .stat-value { animation: countUp 0.6s ease forwards; }
 
@@ -93,6 +100,73 @@
     }
     .trust-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--muted); }
     .trust-item span { font-size: 1rem; }
+
+    /* ══════════════════════════════════════
+       BLOC SIMULATEUR PER — intégré
+    ══════════════════════════════════════ */
+    .sim-promo-wrap {
+      max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem 0;
+    }
+    .sim-promo {
+      background: linear-gradient(135deg, #1a2f1f 0%, #2d6a4f 100%);
+      border-radius: 16px;
+      padding: 2rem 2.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(45,106,79,0.2);
+      transition: box-shadow 0.2s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .sim-promo::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .sim-promo:hover { box-shadow: 0 8px 32px rgba(45,106,79,0.3); transform: translateY(-2px); }
+    .sim-promo-left { flex: 1; min-width: 220px; }
+    .sim-promo-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #a8d5be; font-weight: 600; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .sim-promo-eyebrow::before {
+      content: ''; display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; background: #6fcf97;
+    }
+    .sim-promo-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.15rem, 3vw, 1.5rem);
+      color: #fff; line-height: 1.2; margin-bottom: 8px;
+    }
+    .sim-promo-desc {
+      font-size: 0.84rem; color: rgba(255,255,255,0.7);
+      line-height: 1.6; max-width: 440px;
+    }
+    .sim-promo-badges {
+      display: flex; gap: 7px; flex-wrap: wrap; margin-top: 12px;
+    }
+    .sim-promo-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 100px;
+      font-size: 0.68rem; font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.65);
+    }
+    .sim-promo-cta { flex-shrink: 0; text-align: center; }
+    .sim-promo-btn {
+      display: inline-block;
+      background: #fff; color: var(--accent);
+      padding: 12px 26px; border-radius: 9px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700; font-size: 0.9rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+    .sim-promo-note {
+      font-size: 0.7rem; color: rgba(255,255,255,0.45);
+      margin-top: 6px; text-align: center;
+    }
 
     /* ── SECTION ── */
     .section { max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
@@ -171,15 +245,19 @@
     footer { background: var(--surface); border-top: 1px solid var(--border); text-align: center; padding: 2rem; font-size: 0.82rem; color: var(--muted); }
     .divider { height: 1px; background: var(--border); max-width: 960px; margin: 0 auto 3rem; }
 
-    @media (max-width: 600px) { .cards, .testimonials-grid { grid-template-columns: 1fr; } .hero-stats { gap: 1.5rem; } .trust-bar { gap: 1rem; } }
+    @media (max-width: 600px) {
+      .cards, .testimonials-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+      .trust-bar { gap: 1rem; }
+      .sim-promo { padding: 1.5rem; }
+      nav a { margin-left: 0.9rem; }
+    }
 
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; font-size: 0.85rem; padding: 0.6rem 1.2rem; border-radius: 100px; opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 999; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* ── TELEGRAM ── */
-    .telegram-banner {
-      max-width: 960px; margin: 0 auto 0; padding: 0 2rem 3rem;
-    }
+    .telegram-banner { max-width: 960px; margin: 0 auto 0; padding: 0 2rem 3rem; }
     .telegram-card {
       background: linear-gradient(135deg, #0088cc 0%, #005f8e 100%);
       border-radius: var(--radius); padding: 1.75rem 2rem;
@@ -211,6 +289,7 @@
     <a href="#avis">Avis</a>
     <a href="#guide">Guide</a>
     <a href="#faq">FAQ</a>
+    <a href="simulateur.html" class="nav-sim">🧮 Simulateur PER</a>
     <a href="https://t.me/parrainagefrance2026" target="_blank" rel="noopener noreferrer" style="color:#0088cc; font-weight:600;">📣 Telegram</a>
   </nav>
 </header>
@@ -238,8 +317,6 @@
       <span class="stat-label">Offres actives</span>
     </div>
   </div>
-
-  <!-- Bouton Telegram sous les stats -->
   <div style="margin-top:2rem;">
     <a href="https://t.me/parrainagefrance2026" target="_blank" rel="noopener noreferrer"
       style="display:inline-flex; align-items:center; gap:0.5rem; background:#0088cc; color:#fff; border-radius:100px; padding:0.65rem 1.4rem; font-size:0.9rem; font-weight:600; text-decoration:none; transition:transform 0.15s, box-shadow 0.15s; box-shadow:0 2px 12px rgba(0,136,204,0.3);"
@@ -257,6 +334,31 @@
   <div class="trust-item"><span>🔒</span> Aucune donnée collectée</div>
   <div class="trust-item"><span>✅</span> Codes vérifiés chaque mois</div>
   <div class="trust-item"><span>🎁</span> 100% gratuit pour le filleul</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     BLOC SIMULATEUR PER
+══════════════════════════════════════ -->
+<div class="sim-promo-wrap">
+  <a href="simulateur.html" class="sim-promo">
+    <div class="sim-promo-left">
+      <div class="sim-promo-eyebrow">Outil gratuit · Nouveau · Barème IR 2026 officiel</div>
+      <div class="sim-promo-title">Simulateur PER 2026 —<br/>Calculez votre économie d'impôt</div>
+      <div class="sim-promo-desc">
+        Combien pouvez-vous économiser sur vos impôts avec un Plan d'Épargne Retraite ?
+        Calcul personnalisé en 2 minutes — quotient familial, TNS, défiscalisation, raclage de tranches.
+      </div>
+      <div class="sim-promo-badges">
+        <span class="sim-promo-badge">📊 Barème 2026 officiel</span>
+        <span class="sim-promo-badge">🔒 Aucune donnée collectée</span>
+        <span class="sim-promo-badge">⚡ Résultat immédiat</span>
+      </div>
+    </div>
+    <div class="sim-promo-cta">
+      <div class="sim-promo-btn">Lancer le simulateur →</div>
+      <div class="sim-promo-note">Gratuit · Sans inscription</div>
+    </div>
+  </a>
 </div>
 
 <!-- ── OFFRES ── -->
@@ -437,81 +539,55 @@
 <section class="testimonials" id="avis">
   <h2 class="testimonials-title">Ce que disent nos filleuls</h2>
   <p class="testimonials-sub">Des centaines de personnes ont déjà utilisé nos codes avec succès.</p>
-
   <div class="testimonials-grid">
-
     <div class="testimonial">
       <div class="stars">★★★★★</div>
       <p class="testimonial-text">J'ai reçu mes 150 € Fortuneo en moins de 3 semaines après l'ouverture de mon compte. Tout s'est passé exactement comme promis, super service !</p>
       <div class="testimonial-author">
         <div class="testimonial-avatar" style="background:#0066cc;">TM</div>
-        <div>
-          <div class="testimonial-name">Thomas M.</div>
-          <div class="testimonial-detail">Parrainage Fortuneo · février 2026</div>
-        </div>
+        <div><div class="testimonial-name">Thomas M.</div><div class="testimonial-detail">Parrainage Fortuneo · février 2026</div></div>
       </div>
     </div>
-
     <div class="testimonial">
       <div class="stars">★★★★★</div>
       <p class="testimonial-text">Code Boursobank fonctionnel du premier coup. J'ai obtenu mon bonus rapidement après ma première utilisation de la carte. Je recommande sans hésiter.</p>
       <div class="testimonial-author">
         <div class="testimonial-avatar" style="background:#e65100;">SL</div>
-        <div>
-          <div class="testimonial-name">Sophie L.</div>
-          <div class="testimonial-detail">Parrainage Boursobank · janvier 2026</div>
-        </div>
+        <div><div class="testimonial-name">Sophie L.</div><div class="testimonial-detail">Parrainage Boursobank · janvier 2026</div></div>
       </div>
     </div>
-
     <div class="testimonial">
       <div class="stars">★★★★★</div>
       <p class="testimonial-text">20 € déduits directement sur ma première facture Gaz de Bordeaux. Simple, rapide, efficace. Merci pour le code !</p>
       <div class="testimonial-author">
         <div class="testimonial-avatar" style="background:#f57f17;">MR</div>
-        <div>
-          <div class="testimonial-name">Marc R.</div>
-          <div class="testimonial-detail">Parrainage GDB · mars 2026</div>
-        </div>
+        <div><div class="testimonial-name">Marc R.</div><div class="testimonial-detail">Parrainage GDB · mars 2026</div></div>
       </div>
     </div>
-
     <div class="testimonial">
       <div class="stars">★★★★★</div>
       <p class="testimonial-text">Très réactif pour le lien Linxea. J'ai reçu le lien personnalisé en quelques heures et le bonus a bien été crédité sur mon contrat.</p>
       <div class="testimonial-author">
         <div class="testimonial-avatar" style="background:#2e7d32;">CJ</div>
-        <div>
-          <div class="testimonial-name">Claire J.</div>
-          <div class="testimonial-detail">Parrainage Linxea · février 2026</div>
-        </div>
+        <div><div class="testimonial-name">Claire J.</div><div class="testimonial-detail">Parrainage Linxea · février 2026</div></div>
       </div>
     </div>
-
     <div class="testimonial">
       <div class="stars">★★★★★</div>
       <p class="testimonial-text">J'avais des doutes mais tout a fonctionné parfaitement avec Swissquote. Le code a été accepté à l'inscription et le bonus versé rapidement.</p>
       <div class="testimonial-author">
         <div class="testimonial-avatar" style="background:#283593;">AB</div>
-        <div>
-          <div class="testimonial-name">Antoine B.</div>
-          <div class="testimonial-detail">Parrainage Swissquote · janvier 2026</div>
-        </div>
+        <div><div class="testimonial-name">Antoine B.</div><div class="testimonial-detail">Parrainage Swissquote · janvier 2026</div></div>
       </div>
     </div>
-
     <div class="testimonial">
       <div class="stars">★★★★★</div>
       <p class="testimonial-text">Super initiative ! J'ai utilisé deux codes en même temps (Fortuneo + GDB) et les deux bonus ont été validés sans problème.</p>
       <div class="testimonial-author">
         <div class="testimonial-avatar" style="background:#c62828;">LD</div>
-        <div>
-          <div class="testimonial-name">Lucie D.</div>
-          <div class="testimonial-detail">Double parrainage · mars 2026</div>
-        </div>
+        <div><div class="testimonial-name">Lucie D.</div><div class="testimonial-detail">Double parrainage · mars 2026</div></div>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -534,6 +610,9 @@
 
   <h2>Puis-je cumuler plusieurs parrainages ?</h2>
   <p>Oui, absolument ! Chaque offre de parrainage est indépendante. Vous pouvez tout à fait ouvrir un compte Fortuneo, souscrire chez Boursobank et changer de fournisseur d'énergie chez Gaz de Bordeaux simultanément, en utilisant les trois codes. Cela représente potentiellement plus de <strong>300 € de bonus cumulés</strong>, sans aucun coût supplémentaire.</p>
+
+  <h2>Simulateur PER 2026 — optimisez aussi votre fiscalité</h2>
+  <p>En complément des parrainages, notre <a href="simulateur.html"><strong>simulateur PER 2026</strong></a> vous permet de calculer gratuitement l'économie d'impôt que vous pouvez réaliser grâce à un Plan d'Épargne Retraite. Basé sur le barème IR 2026 officiel (LFI n° 2026-103), il prend en compte votre situation familiale, vos revenus TNS et vos dispositifs de défiscalisation existants. Les meilleurs PER du marché sont disponibles avec code de parrainage directement depuis le simulateur.</p>
 </section>
 
 <div class="divider"></div>
@@ -569,6 +648,10 @@
     <summary>Le code ne fonctionne pas, que faire ?</summary>
     <p>Assurez-vous de saisir le code exactement comme indiqué (majuscules, chiffres). Si le problème persiste, contactez directement le service client de la banque en mentionnant le code. Tous nos codes sont vérifiés et actifs.</p>
   </details>
+  <details>
+    <summary>Comment calculer mon économie d'impôt avec un PER ?</summary>
+    <p>Notre <a href="simulateur.html" style="color:var(--accent);">simulateur PER 2026</a> calcule gratuitement votre économie d'impôt selon votre revenu, votre situation familiale et votre tranche marginale d'imposition. Le résultat est immédiat et basé sur le barème IR 2026 officiel. Vous pouvez ensuite ouvrir directement un PER avec un code de parrainage depuis le simulateur.</p>
+  </details>
 </section>
 
 <!-- ── FOOTER ── -->
@@ -576,6 +659,8 @@
   <p>Site tenu par un particulier · Aucune donnée personnelle collectée · Pas de cookies tiers</p>
   <p style="margin-top:0.5rem;">
     <a href="https://t.me/parrainagefrance2026" target="_blank" rel="noopener noreferrer" style="color:#0088cc; text-decoration:none; font-weight:500;">✈️ Canal Telegram</a>
+    &nbsp;·&nbsp;
+    <a href="simulateur.html" style="color:var(--accent); text-decoration:none; font-weight:500;">🧮 Simulateur PER 2026</a>
   </p>
   <p style="margin-top:0.4rem;">Les offres présentées sont susceptibles d'évoluer — vérifiez les conditions sur le site de chaque établissement.</p>
 </footer>
@@ -595,8 +680,6 @@
       el.textContent = Math.floor(start) + (suffix || '');
     }, 16);
   }
-
-  // Lance les compteurs au chargement
   window.addEventListener('load', () => {
     animateCounter('counter-parrainages', 47, 1500);
     animateCounter('counter-euros', 4200, 1800, ' €');
